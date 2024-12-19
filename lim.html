@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+   
+</head>
+<body>
+    <div id="header">
+        <div class="container">
+            <nav>
+                <img src="image/logo.png" class="logo">
+            <ul id="sidemenu">
+              <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+                <li><a href="#header">Home</a></li>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#project">Project</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+        </nav>
+        <div id="head" class="header-text">
+            <h1>Hello, I'm <span>Analou Lim</span>
+            <br>from Bohol</h1>
+        </div>   
+     </div>
+ </div>  
+ <!----------about---------->
+  <div id="about">
+    <div class="container">
+      <div class="row">
+        <div class="about-col-1">
+            <img src="image/me.jpg">
+        </div>
+        <div class="about-col-2">
+            <h1 class="sub-title">About Me</h1>
+            <p>My name is ANALOU LIM.You can call me Leng. I live in Balilihan, Bohol. 
+               I am currently a third-year student pursuing a Bachelor's degree 
+               in Information Technology at Bohol Island State University.
+            <br><br>I love doing things in sytematic way, I love being well-organized.
+                I am a person who like editing layouts, calligraphy and crochet.
+                Just like you, I'm on a personal journey through life, seeking to learn, 
+                grow, and connect with others in this vast, diverse world.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <!-------project----->
+  <div id="project">
+    <div class="container">
+     <h1 class="sub-title">My Work</h1>
+      <div class="wrapper">
+        <i id="left" class="fa-solid fa-angle-left"></i>
+        <div class="carousel">
+          <img src="image/c1.png.jpg" alt="img" draggable="false">
+          <img src="image/c2.png.jpg" alt="img" draggable="false">
+          <img src="image/c3.png.jpg" alt="img" draggable="false">
+          <img src="image/c4.png.jpg" alt="img" draggable="false">
+          <img src="image/e1.png.jpg" alt="img" draggable="false">
+          <img src="image/e2.png.jpg" alt="img" draggable="false">
+          <img src="image/hat.png.jpg" alt="img" draggable="false">
+          <img src="image/kitty.png.jpg" alt="img" draggable="false">
+          <img src="image/tulips.png.jpg" alt="img" draggable="false">
+          <img src="image/sunflower.png.jpg" alt="img" draggable="false">
+        </div>
+        <i class="fa-solid fa-angle-right"></i>
+      </div>
+  </div>
+  <!-----------contact------->
+  <div id="contact">
+    <div class="container">
+       <div class="row">
+        <div class="contact-left">
+          <h1 class="sub-title">Contact Me</h1>
+          <p><i class="fa-regular fa-envelope"></i> irisgnda@gmail.com</p>
+          <p><i class="fa-solid fa-phone"></i> 09106858059</p>
+          <div class="social-icons">
+            <a href=""><i class="fa-brands fa-facebook"></i></a>
+            <a href=""><i class="fa-brands fa-twitter-square"></i></a>
+            <a href=""><i class="fa-brands fa-instagram"></i></a>
+            <a href=""><i class="fa-brands fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="contact-right">
+          <form>
+            <input type="text" name="Name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
+            <button type="submit">Submit</button>
+          </form>
+          
+        </div>
+       </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Made with <i class="fa-solid fa-heart"></i> by Analeng</p>
+  </div>
+  <script>
+    const carousel = document.querySelector(".carousel");
+firstImg = carousel.querySelectorAll("img")[0];
+arrowIcons = document.querySelectorAll(".wrapper i");
+
+let isDragStart = false, isDragging = false, prevPageX, prevScrollLeft;
+
+const showHideIcons =() => {
+    let scrollWidth = carousel.scrollWidth - carousel.clientWidth;
+    arrowIcons[0].style.display = carousel.scrollLeft == 0 ? "none" : "block";
+    arrowIcons[1].style.display = carousel.scrollLeft == scrollWidth ? "none" : "block";
+}
+
+arrowIcons.forEach(icon => {
+   icon.addEventListener("click",() => {
+    let firstImgWidth = firstImg.clientWidth + 14;
+     carousel.scrollLeft += icon.id == "left" ? -firstImgWidth : firstImgWidth;
+     setTimeout(() => showHideIcons(),60);
+   });
+});
+
+const autoSlide = () => {
+    if(carousel.scrollLeft == (carousel.scrollWidth - carousel.clientWidth)) return;
+
+    positionDiff = Math.abs(positionDiff);
+    let firstImgWidth = firstImg.clientWidth + 14;
+    let valDifference = firstImgWidth - positionDiff;
+
+    if(carousel.scrollLeft > prevScrollLeft){
+        return carousel.scrollLeft += positionDiff > firstImgWidth / 3 ? valDifference : -positionDiff;
+    }
+    carousel.scrollLeft -= positionDiff > firstImgWidth / 3 ? valDifference : -positionDiff;
+}
+
+const dragStart = (e) => {
+    isDragStart = true;
+    prevPageX = e.pageX || e.touches[0].pageX;
+    prevScrollLeft = carousel.scrollLeft;
+}
+
+const dragging = (e) => {
+    if(!isDragStart) return;
+    e.preventDefault();
+    isDragging = true;
+    carousel.classList.add("dragging");
+    let positionDiff = (e.pageX || e.touches[0].pageX) - prevPageX;
+    carousel.scrollLeft = prevScrollLeft - positionDiff;
+    showHideIcons();
+}
+
+const dragStop = () => {
+    isDragStart = false;
+    carousel.classList.remove("dragging");
+
+    if(!isDragging) return;
+    isDragging = false;
+    autoSlide();
+ }
+
+carousel.addEventListener("mousedown", dragStart);
+carousel.addEventListener("touchstart", dragStart);
+
+carousel.addEventListener("mousemove", dragging);
+carousel.addEventListener("touchmove", dragging);
+
+carousel.addEventListener("mouseup",dragStop);
+carousel.addEventListener("mouseleave",dragStop);
+carousel.addEventListener("touchend",dragStop);
+  </script>
+  
+  <script>
+    var sidemeu = document.getElementById("sidemenu");
+function openmenu(){
+    sidemeu.style.right="0";
+}
+function closemenu(){
+    sidemeu.style.right="-200px";
+}
+  </script>
+</body>
+
+</html>
